@@ -324,7 +324,7 @@ export default function VideoModal({ isOpen, onClose, videos, activeIndex, setAc
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center overflow-hidden"
+          className="fixed inset-0 z-[9999] w-screen h-[100dvh] bg-black/95 backdrop-blur-md flex items-center justify-center overflow-hidden"
         >
           <div className="absolute top-0 left-0 w-full p-4 lg:p-6 flex justify-between items-center z-50">
             <span className="text-white text-sm font-medium tracking-widest bg-black/50 px-4 py-1.5 rounded-full backdrop-blur-md">
