@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense } from "react";
-import VideoCarousel from "../VideoCarousel"; // Adjust path if needed
+import VideoCarousel from "../VideoCarousel";
 
 const LandingPage = () => {
   return (
