@@ -6,7 +6,7 @@ const LandingPage = () => {
   return (
     <div className="bg-white min-h-screen w-full flex flex-col">
       
-      <main className="flex-grow w-full flex flex-col items-center justify-center">
+      <main className="flex-grow w-full flex flex-col items-center justify-center overflow-hidden">
         <Suspense fallback={
           <div className="flex justify-center items-center py-32 text-zinc-400 font-medium animate-pulse">
             Loading Application...

@@ -70,7 +70,7 @@ const HoverVideoCard = ({ video, onClick }) => {
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      className="relative flex-shrink-0 w-[300px] sm:w-[380px] md:w-[450px] lg:w-[500px] aspect-video bg-zinc-200 rounded-[1.5rem] overflow-hidden cursor-pointer snap-center group shadow-md hover:shadow-xl transition-all duration-500 border border-black/5"
+      className="relative flex-shrink-0 w-[300px] sm:w-[380px] md:w-[450px] lg:w-[500px] aspect-video bg-zinc-200 rounded-[1.5rem] overflow-hidden cursor-pointer snap-center md:snap-start group shadow-md hover:shadow-xl transition-all duration-500 border border-black/5"
     >
       {isMounted ? (
         <video
@@ -149,8 +149,8 @@ export default function VideoCarousel() {
   const checkScrollState = () => {
     if (sliderRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
-      setCanScrollLeft(scrollLeft > 0);
-      setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 2);
+      setCanScrollLeft(Math.ceil(scrollLeft) > 5);
+      setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 5);
     }
   };
 
@@ -159,12 +159,12 @@ export default function VideoCarousel() {
         checkScrollState();
       }, 100);
 
-      window.addEventListener("resize", checkScrollState);
-      return () => {
-        clearTimeout(timeoutId);
-        window.removeEventListener("resize", checkScrollState);
-      };
-    }, [videos]);
+    window.addEventListener("resize", checkScrollState);
+    return () => {
+      window.removeEventListener("resize", checkScrollState);
+      clearTimeout(timeoutId);
+    };
+  }, [videos]);
 
   const openVideo = (index) => {
     setActiveIndex(index);
@@ -201,23 +201,21 @@ export default function VideoCarousel() {
             Loading Cat Videos...
           </div>
         ) : (
-          <div className="relative group px-4 md:px-16">
+          <div className="relative group px-0 md:px-16">
             
-            
-            {canScrollLeft && (
-              <button 
-                onClick={scrollLeftAmount}
-                className="hidden md:flex absolute left-4 lg:left-8 top-1/2 -translate-y-1/2 z-20 items-center justify-center w-14 h-14 rounded-full bg-white/80 backdrop-blur-md border border-black/5 text-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:bg-white hover:scale-105 active:scale-95 transition-all duration-300"
-              >
-                <ChevronLeft size={28} strokeWidth={1.5} className="mr-1" />
-              </button>
-            )}
+            <button 
+              onClick={scrollLeftAmount}
+              className={`flex absolute left-2 md:left-4 lg:left-8 top-1/2 -translate-y-1/2 z-[100] items-center justify-center w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/90 backdrop-blur-md border border-black/5 text-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:bg-white hover:scale-105 active:scale-95 transition-all duration-300 ${
+                canScrollLeft ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+            >
+              <ChevronLeft size={28} strokeWidth={2} className="mr-0.5 md:mr-1 w-5 h-5 md:w-7 md:h-7" />
+            </button>
 
-          
             <div 
               ref={sliderRef}
               onScroll={checkScrollState}
-              className="flex overflow-x-auto gap-6 pb-10 pt-4 snap-x snap-mandatory px-4 md:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+              className="flex overflow-x-auto gap-6 pb-10 pt-4 snap-x snap-mandatory px-[calc(50%-150px)] sm:px-[calc(50%-190px)] md:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
             >
               {videos.map((video, index) => (
                 <HoverVideoCard 
@@ -226,17 +224,17 @@ export default function VideoCarousel() {
                   onClick={() => openVideo(index)} 
                 />
               ))}
+              <div className="hidden md:block w-4 flex-shrink-0" aria-hidden="true" />
             </div>
 
-            
-            {canScrollRight && (
-              <button 
-                onClick={scrollRightAmount}
-                className="hidden md:flex absolute right-4 lg:right-8 top-1/2 -translate-y-1/2 z-20 items-center justify-center w-14 h-14 rounded-full bg-white/80 backdrop-blur-md border border-black/5 text-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.08)] hover:bg-white hover:scale-105 active:scale-95 transition-all duration-300"
-              >
-                <ChevronRight size={28} strokeWidth={1.5} className="ml-1" />
-              </button>
-            )}
+            <button 
+              onClick={scrollRightAmount}
+              className={`flex absolute right-2 md:right-4 lg:right-8 top-1/2 -translate-y-1/2 z-[100] items-center justify-center w-10 h-10 md:w-14 md:h-14 rounded-full bg-white/90 backdrop-blur-md border border-black/5 text-zinc-800 shadow-[0_8px_30px_rgb(0,0,0,0.12)] hover:bg-white hover:scale-105 active:scale-95 transition-all duration-300 ${
+                canScrollRight ? "opacity-100" : "opacity-0 pointer-events-none"
+              }`}
+            >
+              <ChevronRight size={28} strokeWidth={2} className="ml-0.5 md:ml-1 w-5 h-5 md:w-7 md:h-7" />
+            </button>
             
           </div>
         )}
